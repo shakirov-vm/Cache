@@ -1,19 +1,34 @@
 ﻿#include <iostream>
 #include <math.h>
 #include "Q2.h"
+#include <vector>
 
-int slow_get_page_int(int key) { return key; }
+#define KEY size_t
+#define VALUE int
+
+VALUE slow_get_page_int(KEY key) { return key; }
 
 int main() {
     std::cout << "we enter\n";
 
     using namespace q2_cache;
 
-    Q2Cache<int> our_cache(20);
+    size_t hit = 0;
 
-    for (int i = 0; i < 1; i++) {
-        our_cache.lookup_update(static_cast<size_t>(5 * i / sin(i * i)), slow_get_page_int);
+    size_t capacity, quantity;
+
+    printf("Enter capacity, then quantity, then numbers\n");
+    std::cin >> capacity >> quantity;
+    int tmp = 0;
+
+    Q2Cache<VALUE> our_cache(capacity);
+
+    for (int i = 0; i < quantity; i++) {
+        std::cin >> tmp;
+        if (our_cache.lookup_update(tmp, slow_get_page_int)) hit++;
     }
+
+    printf("Hits - %llu\n", hit);
 
     return 0;
 }
