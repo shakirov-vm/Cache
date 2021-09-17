@@ -6,7 +6,7 @@
 #define KEY size_t
 #define VALUE int
 
-VALUE slow_get_page_int(KEY key) { return key; }
+VALUE slow_get_page_int(KEY key) { return key * key * key; }
 
 int main() {
     std::cout << "we enter\n";
