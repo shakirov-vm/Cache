@@ -16,7 +16,7 @@ struct bucket {
     bool full() const { return (queue_.size() == size_); }
     void dump() const {
         printf("[%s]: ", typeid(queue_.begin()->second).name());
-        for (ListIt i = queue_.begin(); i != queue_.end(); i++) {
+        for (auto i = queue_.begin(); i != queue_.end(); i++) {
             std::cout << "[" << i->second << "] -> ";
         }
         printf("\n");
@@ -46,8 +46,6 @@ public:
         out.size_ = size - main.size_ - in.size_;
     }
 
-
-
     template<typename slow_func>
     bool lookup_update(Key key, slow_func slow_get_page) {
         HashIt key_HT_Iter = main.data_.find(key);
@@ -74,7 +72,7 @@ public:
 
                     in.queue_.push_front(std::make_pair(key, slow_get_page(key)));
                     in.data_[key] = in.queue_.begin();
-
+                    dump();
                     return false;
                 }
 
@@ -92,7 +90,7 @@ public:
             
             if (key_HT_Iter->second != in.queue_.begin())
                 in.queue_.splice(in.queue_.begin(), in.queue_, key_HT_Iter->second);
-            
+
             return true;
         }
 
