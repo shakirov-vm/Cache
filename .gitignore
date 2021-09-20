@@ -4,3 +4,4 @@ Cache.vcxproj.user
 Debug/
 x64/
 .git/
+build/

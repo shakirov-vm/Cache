@@ -3,6 +3,8 @@
 #include <list>
 #include <iterator>
 
+#define DEBUG 1
+
 namespace q2_cache {
 
 template <typename Value, typename Key = size_t> // = size_t unnecessary
@@ -72,7 +74,8 @@ public:
 
                     in.queue_.push_front(std::make_pair(key, slow_get_page(key)));
                     in.data_[key] = in.queue_.begin();
-                    dump();
+                    
+                    if (DEBUG) dump();
                     return false;
                 }
 
@@ -85,18 +88,21 @@ public:
                 out.data_.erase(key_HT_Iter);
                 main.data_[key] = main.queue_.begin();
 
+                if (DEBUG) dump();
                 return true;
             }
             
             if (key_HT_Iter->second != in.queue_.begin())
                 in.queue_.splice(in.queue_.begin(), in.queue_, key_HT_Iter->second);
 
+            if (DEBUG) dump();
             return true;
         }
 
         if (key_HT_Iter->second != main.queue_.begin())
             main.queue_.splice(main.queue_.begin(), main.queue_, key_HT_Iter->second); // ?
 
+        if (DEBUG) dump();
         return true;
     }
 
