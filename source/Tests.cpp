@@ -1,17 +1,18 @@
 
+
 #pragma once
 
 #include <fstream>
 #include <iostream>
 
 #include "Q2.h"
- 
+
 bool intUnitTest(std::string& input, std::string& answer, int (*slow_get_page_int) (size_t)) {
 
     std::ifstream input_potok(input);
 
     if (input_potok.is_open()) {
-        
+
         size_t capacity, quantity;
         input_potok >> capacity >> quantity;
 

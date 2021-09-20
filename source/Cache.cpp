@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
         std::string answer = std::string(argv[2]);
 
         if (intUnitTest(input, answer, slow_get_page_int)) return 0;
-        
+
         return -1;
     }
     else if (argc != 3 && argc != 1) {
@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
 
         size_t capacity, quantity;
 
-        printf("Enter capacity, then quantity, then numbers\n");
         std::cin >> capacity >> quantity;
         int tmp = 0;
 
@@ -42,9 +41,8 @@ int main(int argc, char** argv) {
             if (our_cache.lookup_update(tmp, slow_get_page_int)) hit++;
         }
 
-        printf("Hits - %llu\n", hit);
+        printf("%llu\n", hit);
 
         return 0;
     }
 }
-
