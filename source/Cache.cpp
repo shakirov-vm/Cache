@@ -5,8 +5,8 @@
 #include "Q2.h"
 #include "Test.h"
 
-#define KEY size_t
-#define VALUE int
+using KEY = size_t;
+using VALUE = int;
 
 VALUE slow_get_page_int(KEY key) { return key * key * key; }
 
@@ -25,8 +25,6 @@ int main(int argc, char** argv) {
     }
     else {
 
-        using namespace q2_cache;
-
         size_t hit = 0;
 
         size_t capacity, quantity;
@@ -34,14 +32,14 @@ int main(int argc, char** argv) {
         std::cin >> capacity >> quantity;
         int tmp = 0;
 
-        Q2Cache<VALUE> our_cache(capacity);
+        q2_cache::Q2Cache<VALUE> our_cache(capacity);
 
-        for (int i = 0; i < quantity; i++) {
+        for (size_t i = 0; i < quantity; i++) {
             std::cin >> tmp;
             if (our_cache.lookup_update(tmp, slow_get_page_int)) hit++;
         }
 
-        printf("%llu\n", hit);
+        std::cout << hit << "\n";
 
         return 0;
     }
