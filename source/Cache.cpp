@@ -11,14 +11,10 @@ using VALUE = int;
 VALUE slow_get_page_int(KEY key) { return key * key * key; }
 
 int main(int argc, char** argv) {
-    printf("Where?\n");
-    printf("Where?_2\n");
     if (argc == 3) { // There tests
-        printf("There??\n");
         std::string input = std::string(argv[1]);
         std::string answer = std::string(argv[2]);
-
-        printf("Before Test\n");
+        
         if (/*q2_test::*/intUnitTest(input, answer, slow_get_page_int)) return 0;
 
         return -1;

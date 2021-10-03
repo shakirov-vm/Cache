@@ -3,7 +3,7 @@
 #include <list>
 #include <iterator>
 
-#define DEBUG 1
+#define DEBUG 0
 
 namespace q2_cache {
 
