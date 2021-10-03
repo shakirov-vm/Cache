@@ -1,4 +1,3 @@
-
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -12,7 +11,7 @@
 namespace q2_test {
     
     bool intUnitTest(std::string input, std::string answer, int (*slow_get_page_int) (size_t)) { 
-
+        
         std::ifstream input_potok(input);
 
         if (input_potok.is_open()) {
@@ -29,7 +28,7 @@ namespace q2_test {
                 input_potok >> tmp;
                 vector_potok.push_back(tmp);
             }
-
+            
             size_t ideal = ideal_hits(vector_potok, slow_get_page_int, capacity);
             std::cout << "Ideal cache: " << ideal << " hits\n";
 
@@ -51,8 +50,8 @@ namespace q2_test {
                 }
                 else {
                     std::cout << "Program hits - " << hit << ", true hit - " << answer_hit << ". Test from file [" << input << "] failed";
-                    input_potok.close();
                     answer_potok.close();
+                    input_potok.close();
                     return false;
                 }
             }
@@ -93,15 +92,16 @@ namespace q2_test {
 
         HashIt key_HT_Iter = data_.find(key);
         if (key_HT_Iter != data_.end()) {
-            for (ListIt i = queue_.begin(); i != queue_.end(); i++) --(i->distance_);      
+            for (ListIt i = queue_.begin(); i != queue_.end(); i++) --((*i).distance_);
+
             return true;
         }
 
-        size_t find_in_potok_ = potok_pointer_ + 1; 
+        size_t find_in_potok_ = potok_pointer_ + 1; //from next           
 
         while (potok_[find_in_potok_] != key) {
             if (find_in_potok_ == potok_size_) return false; 
-            
+
             ++find_in_potok_;
         }
 
@@ -111,7 +111,7 @@ namespace q2_test {
             ListIt list_candidate = queue_.end();
 
             for (ListIt i = queue_.begin(); i != queue_.end(); i++) {
-                --((*i).distance_);
+                --(i->distance_);
 
                 if (erase_candidat.second > i->distance_) continue;
                 erase_candidat.first = i->key_;
@@ -127,7 +127,7 @@ namespace q2_test {
         page new_p(slow_get_page_int(key), key, find_in_potok_ - potok_pointer_);
         queue_.push_back(new_p);
         data_[key] = queue_.end();
-       
+
         return false;
     }
 

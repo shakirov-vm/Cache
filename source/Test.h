@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <iostream>
@@ -23,7 +24,7 @@ class IdealCache {
     std::list<page> queue_;
     std::unordered_map<size_t, ListIt> data_;
     size_t size_;
-    std::vector<int> potok_;
+    std::vector<int> potok_; // int
     size_t potok_pointer_;
     size_t potok_size_;
 
@@ -35,9 +36,10 @@ class IdealCache {
 
 public:
 
-    IdealCache(size_t size, std::vector<int>& potok) : size_(size), potok_pointer_(0) {
-    	potok_size_ = potok_.size();
+    IdealCache(size_t size, std::vector<int>& potok) : size_(size) {
         potok_ = potok;
+        potok_size_ = potok_.size();
+        potok_pointer_ = 0;
     }
 
     bool lookup_update(size_t key, int (*slow_get_page_int) (size_t));
