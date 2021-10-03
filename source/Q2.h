@@ -29,7 +29,7 @@ namespace q2_cache {
             if (key_HT_Iter != data_.end()) {
 
                 if (key_HT_Iter->second != queue_.begin())
-                queue_.splice(queue_.begin(), queue_, key_HT_Iter->second);
+                    queue_.splice(queue_.begin(), queue_, key_HT_Iter->second);
 
                 if (DEBUG) dump();
                 return true;
