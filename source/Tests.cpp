@@ -9,10 +9,9 @@
 #include "Q2.h"
 #include "Test.h"
 
-//namespace q2_test {
-
+namespace q2_test {
     
-    bool intUnitTest(std::string input, std::string answer, int (*slow_get_page_int) (size_t)) { // Close file descriptor?
+    bool intUnitTest(std::string input, std::string answer, int (*slow_get_page_int) (size_t)) { 
 
         std::ifstream input_potok(input);
 
@@ -30,7 +29,7 @@
                 input_potok >> tmp;
                 vector_potok.push_back(tmp);
             }
-            
+
             size_t ideal = ideal_hits(vector_potok, slow_get_page_int, capacity);
             std::cout << "Ideal cache: " << ideal << " hits\n";
 
@@ -46,16 +45,21 @@
 
                 if (answer_hit == hit) {
                     std::cout << "Test from file [" << input << "] work correctly\n";
+                    input_potok.close();
+                    answer_potok.close();
                     return true;
                 }
                 else {
                     std::cout << "Program hits - " << hit << ", true hit - " << answer_hit << ". Test from file [" << input << "] failed";
+                    input_potok.close();
+                    answer_potok.close();
                     return false;
                 }
             }
 
             std::cout << "Your answer file [" << answer << "] wasn't open.";
             std::cout << "In this test was " << hit << " hits. Test failed\n";
+            input_potok.close();
             return false;
         }
 
@@ -70,6 +74,8 @@
 
         for (size_t i = 0; i < quantity; i++) {
             if (ideal.lookup_update(vector_potok[i], slow_get_page_int)) hit++;
+
+            ++ideal.potok_pointer_;
             if (DEBUG) ideal.dump();
         }
         
@@ -87,19 +93,15 @@
 
         HashIt key_HT_Iter = data_.find(key);
         if (key_HT_Iter != data_.end()) {
-            for (ListIt i = queue_.begin(); i != queue_.end(); i++) --((*i).distance_);
-
-            ++potok_pointer_;
+            for (ListIt i = queue_.begin(); i != queue_.end(); i++) --(i->distance_);      
             return true;
         }
 
-        size_t find_in_potok_ = potok_pointer_ + 1; //from next              // ????
+        size_t find_in_potok_ = potok_pointer_ + 1; 
 
-        while (potok_[find_in_potok_] != key) {//?
-            if (find_in_potok_ == potok_.size()/*potok_.end()*/) {
-                ++potok_pointer_;
-                return false; // potok.size is slow
-            }
+        while (potok_[find_in_potok_] != key) {
+            if (find_in_potok_ == potok_size_) return false; 
+            
             ++find_in_potok_;
         }
 
@@ -111,15 +113,12 @@
             for (ListIt i = queue_.begin(); i != queue_.end(); i++) {
                 --((*i).distance_);
 
-                if (erase_candidat.second > (*i).distance_) continue;
-                erase_candidat.first = (*i).key_;
-                erase_candidat.second = (*i).distance_;
+                if (erase_candidat.second > i->distance_) continue;
+                erase_candidat.first = i->key_;
+                erase_candidat.second = i->distance_;
                 list_candidate = i;
             }
-            if (list_candidate == queue_.end()) {
-                ++potok_pointer_;
-                return false;
-            }
+            if (list_candidate == queue_.end()) return false;
 
             queue_.erase(list_candidate);
             data_.erase(erase_candidat.first);
@@ -128,14 +127,8 @@
         page new_p(slow_get_page_int(key), key, find_in_potok_ - potok_pointer_);
         queue_.push_back(new_p);
         data_[key] = queue_.end();
-
-
-        ++potok_pointer_;
-        return false;
-
-        ++potok_pointer_;
+       
         return false;
     }
 
-
-//}
+}
